@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 1s ease, color 1s ease;
+            overflow: hidden;
+        }
+
+        /* Время суток — фоны и цвета */
+        .time-night {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #e0d6ff;
+        }
+        .time-dawn {
+            background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
+            color: #fff5e6;
+        }
+        .time-morning {
+            background: linear-gradient(135deg, #f5d5a0, #e8c47a, #d4a960);
+            color: #4a3520;
+        }
+        .time-day {
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb, #e0f0ff);
+            color: #2a3a5c;
+        }
+        .time-afternoon {
+            background: linear-gradient(135deg, #f093fb, #f5576c, #fda085);
+            color: #fff5e6;
+        }
+        .time-evening {
+            background: linear-gradient(135deg, #c94b4b, #4b134f, #0f0c29);
+            color: #e0d6ff;
+        }
+        .time-dusk {
+            background: linear-gradient(135deg, #2b1b6b, #1a1a4e, #0a0a2e);
+            color: #c8b8f8;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            padding: 40px;
+        }
+
+        /* Верхняя секция: время + погода */
+        .top-section {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        /* Левая часть: время и приветствие */
+        .left-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Овальный блок времени */
+        .clock-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 220px;
+            height: 140px;
+            border-radius: 70px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            margin-bottom: 15px;
+        }
+
+        .date {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .clock {
+            font-size: 3.2rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        /* Приветствие */
+        .greeting {
+            font-size: 1.2rem;
+            font-weight: 400;
+            opacity: 0.85;
+            text-align: center;
+        }
+
+        /* Правая часть: погода */
+        .right-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Виджет погоды */
+        .weather-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 20px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .weather-temp {
+            font-size: 2.2rem;
+            font-weight: 300;
+        }
+
+        .weather-icon {
+            font-size: 2rem;
+        }
+
+        .weather-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 12px 18px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            text-align: left;
+        }
+
+        .weather-detail {
+            font-size: 0.85rem;
+            opacity: 0.85;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Поисковая строка */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-engine-icon {
+            padding: 12px 14px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .search-engine-icon:hover {
+            opacity: 1;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 0;
+            border: none;
+            background: transparent;
+            color: inherit;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: inherit;
+            opacity: 0.4;
+        }
+
+        .search-btn {
+            padding: 12px 20px;
+            border: none;
+            background: rgba(255,255,255,0.2);
+            color: inherit;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background: rgba(255,255,255,0.35);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 700px) {
+            .top-section {
+                flex-direction: column;
+                align-items: center;
+                gap: 25px;
+            }
+            .clock-wrapper {
+                width: 200px;
+                height: 130px;
+            }
+            .clock {
+                font-size: 2.8rem;
+            }
+            .weather-section {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body class="time-day">
+    <div class="container">
+        <!-- Верхняя секция: время + погода -->
+        <div class="top-section">
+            <!-- Левая часть: время и приветствие -->
+            <div class="left-section">
+                <div class="clock-wrapper">
+                    <div class="date" id="date"></div>
+                    <div class="clock" id="clock">00:00</div>
+                </div>
+                <div class="greeting" id="greeting"></div>
+            </div>
+
+            <!-- Правая часть: погода -->
+            <div class="right-section">
+                <div class="weather-main" id="weatherSection" style="display:none;">
+                    <span class="weather-icon" id="weatherIcon">☀️</span>
+                    <span class="weather-temp" id="weatherTemp">--°</span>
+                </div>
+                <div class="weather-details" id="weatherDetails" style="display:none;">
+                    <div class="weather-detail" id="weatherCondition">Загрузка...</div>
+                    <div class="weather-detail" id="weatherFeels">Адчуваецца: --°</div>
+                    <div class="weather-detail" id="weatherHumidity">Вільготнасць: --%</div>
+                    <div class="weather-detail" id="weatherWind">Вецер: -- км/ч</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Поисковая строка -->
+        <div class="search-bar">
+            <div class="search-engine-icon" id="engineSwitch" title="Змяніць пошукавік">G</div>
+            <input type="text" class="search-input" id="searchInput" placeholder="Шукаць у Інтэрнэце...">
+            <button class="search-btn" id="searchBtn">Пошук</button>
+        </div>
+    </div>
+
+    <script>
+        // ========== НАСТРОЙКИ ==========
+        const USER_NAME = "";
+        const DEFAULT_CITY = "Novopolotsk";
+        const SEARCH_ENGINES = [
+            { name: "Google", letter: "G", url: "https://www.google.com/search?q=" },
+            { name: "DuckDuckGo", letter: "D", url: "https://duckduckgo.com/?q=" },
+            { name: "Bing", letter: "B", url: "https://www.bing.com/search?q=" },
+            { name: "Yandex", letter: "Y", url: "https://yandex.ru/search/?text=" },
+        ];
+        let currentEngineIndex = parseInt(localStorage.getItem('engineIndex') || '0');
+
+        // ========== ЧАСЫ ==========
+        const DAYS = ['Нд', 'Пн', 'Аў', 'Ср', 'Чц', 'Пт', 'Сб'];
+        const MONTHS = ['студзеня', 'лютага', 'сакавіка', 'красавіка', 'траўня', 'чэрвеня',
+                         'ліпеня', 'жніўня', 'верасня', 'кастрычніка', 'лістапада', 'снежня'];
+
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${h}:${m}`;
+
+            const dayName = DAYS[now.getDay()];
+            const day = now.getDate();
+            const month = MONTHS[now.getMonth()];
+            const year = now.getFullYear();
+            document.getElementById('date').textContent = `${day} ${month} ${year}, ${dayName}`;
+        }
+
+        // ========== ВРЕМЯ СУТОК ==========
+        function updateTheme() {
+            const hour = new Date().getHours();
+            const body = document.body;
+            body.className = '';
+
+            if (hour >= 0 && hour < 5) {
+                body.classList.add('time-night');
+            } else if (hour >= 5 && hour < 7) {
+                body.classList.add('time-dawn');
+            } else if (hour >= 7 && hour < 12) {
+                body.classList.add('time-morning');
+            } else if (hour >= 12 && hour < 15) {
+                body.classList.add('time-day');
+            } else if (hour >= 15 && hour < 17) {
+                body.classList.add('time-afternoon');
+            } else if (hour >= 17 && hour < 19) {
+                body.classList.add('time-evening');
+            } else {
+                body.classList.add('time-dusk');
+            }
+        }
+
+        // ========== ПРИВЕТСТВИЕ ==========
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            let greet = "";
+            if (hour >= 5 && hour < 12) greet = "Добрай раніцы";
+            else if (hour >= 12 && hour < 17) greet = "Добры дзень";
+            else if (hour >= 17 && hour < 22) greet = "Добры вечар";
+            else greet = "Дабранач";
+
+            document.getElementById('greeting').textContent = `${greet}!`;
+        }
+
+        // ========== ПОГОДА (Open-Meteo) ==========
+        const WMO_CODES = {
+            0: { text: "Ясна", icon: "☀️" },
+            1: { text: "Пераважна ясна", icon: "🌤️" },
+            2: { text: "Пераменная воблачнасць", icon: "⛅" },
+            3: { text: "Пахмурна", icon: "☁️" },
+            45: { text: "Туман", icon: "🌫️" },
+            48: { text: "Шэрань", icon: "🌫️" },
+            51: { text: "Імжа слабая", icon: "🌦️" },
+            53: { text: "Імжа ўмераная", icon: "🌦️" },
+            55: { text: "Імжа моцная", icon: "🌧️" },
+            61: { text: "Дождж слабы", icon: "🌧️" },
+            63: { text: "Дождж умераны", icon: "🌧️" },
+            65: { text: "Дождж моцны", icon: "🌧️" },
+            71: { text: "Снег слабы", icon: "🌨️" },
+            73: { text: "Снег ўмераны", icon: "🌨️" },
+            75: { text: "Снег моцны", icon: "❄️" },
+            80: { text: "Лівень слабы", icon: "🌦️" },
+            81: { text: "Лівень ўмераны", icon: "🌧️" },
+            82: { text: "Лівень моцны", icon: "🌧️" },
+            85: { text: "Снегапад слабы", icon: "🌨️" },
+            86: { text: "Снегапад моцны", icon: "❄️" },
+            95: { text: "Навальніца", icon: "⛈️" },
+            96: { text: "Навальніца з градам", icon: "⛈️" },
+            99: { text: "Навальніца з моцным градам", icon: "⛈️" },
+        };
+
+        async function getWeather(city) {
+            try {
+                const geoRes = await fetch(
+                    `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=ru`
+                );
+                const geoData = await geoRes.json();
+
+                if (!geoData.results || geoData.results.length === 0) {
+                    document.getElementById('weatherCondition').textContent = "Горад не знойдзены";
+                    document.getElementById('weatherSection').style.display = 'flex';
+                    document.getElementById('weatherDetails').style.display = 'flex';
+                    return;
+                }
+
+                const { latitude, longitude, name, country } = geoData.results[0];
+
+                const weatherRes = await fetch(
+                    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=auto`
+                );
+                const weatherData = await weatherRes.json();
+                const current = weatherData.current;
+
+                const wmo = WMO_CODES[current.weather_code] || { text: "Невядома", icon: "🌡️" };
+
+                document.getElementById('weatherIcon').textContent = wmo.icon;
+                document.getElementById('weatherTemp').textContent = `${Math.round(current.temperature_2m)}°C`;
+                document.getElementById('weatherCondition').textContent = `${wmo.text}`;
+                document.getElementById('weatherFeels').textContent = `Адчувацца: ${Math.round(current.apparent_temperature)}°C`;
+                document.getElementById('weatherHumidity').textContent = `Вільготнасць: ${current.relative_humidity_2m}%`;
+                document.getElementById('weatherWind').textContent = `Вецер: ${Math.round(current.wind_speed_10m)} км/г`;
+
+                document.getElementById('weatherSection').style.display = 'flex';
+                document.getElementById('weatherDetails').style.display = 'flex';
+            } catch (err) {
+                console.error("Памылка загрузкі надвор'я:", err);
+                document.getElementById('weatherCondition').textContent = "Памылка загрузкі";
+                document.getElementById('weatherSection').style.display = 'flex';
+                document.getElementById('weatherDetails').style.display = 'flex';
+            }
+        }
+
+        // ========== ПОИСК ==========
+        function setSearchEngine(index) {
+            currentEngineIndex = index;
+            const engine = SEARCH_ENGINES[index];
+            document.getElementById('engineSwitch').textContent = engine.letter;
+            document.getElementById('engineSwitch').title = engine.name;
+            localStorage.setItem('engineIndex', index);
+        }
+
+        function doSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                const engine = SEARCH_ENGINES[currentEngineIndex];
+                window.location.href = engine.url + encodeURIComponent(query);
+            }
+        }
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        function init() {
+            updateClock();
+            updateTheme();
+            updateGreeting();
+
+            // Поиск
+            setSearchEngine(currentEngineIndex);
+            document.getElementById('searchBtn').addEventListener('click', doSearch);
+            document.getElementById('searchInput').addEventListener('keydown', e => {
+                if (e.key === 'Enter') doSearch();
+            });
+            document.getElementById('engineSwitch').addEventListener('click', () => {
+                setSearchEngine((currentEngineIndex + 1) % SEARCH_ENGINES.length);
+            });
+
+            // Погода
+            getWeather(DEFAULT_CITY);
+
+            // Обновление каждую минуту
+            setInterval(() => {
+                updateClock();
+                updateTheme();
+                updateGreeting();
+            }, 30000);
+        }
+
+        init();
+    </script>
+</body>
+</html>
